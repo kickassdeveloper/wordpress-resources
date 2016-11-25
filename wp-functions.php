@@ -8,6 +8,8 @@ function set_https($string){
 		}else{
 			return $string;
 		}
+	}else{
+		return $string;
 	}
 }
 ?>
