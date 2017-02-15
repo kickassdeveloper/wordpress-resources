@@ -1,10 +1,11 @@
 <?php
-// function for transforming urls from http to https
-// the function checks if the ssl is activate,
-// else returns the original string.
-// if the ssl is active it ckecks if the link is https,
-// if it is returns it, else it converts the link https,
-// and then returns it.
+/** function for transforming urls from http to https
+ * the function checks if the ssl is activate,
+ * else returns the original string.
+ * if the ssl is active it ckecks if the link is https,
+ * if it is returns it, else it converts the link https,
+ * and then returns it.
+**/
 
 function set_https($string){// $string is the passing argument
 	if (is_ssl()) {
@@ -24,10 +25,11 @@ function set_https($string){// $string is the passing argument
 
 
 
-//the next snippet of code is for adding custom size for pictures
-//take in mind that you will have to regenerate thumbnails for pictures
-//that were added before adding this functionality
-
+/**
+ *  the next snippet of code is for adding custom size for pictures
+ *   take in mind that you will have to regenerate thumbnails for pictures
+ *   that were added before adding this functionality
+**/
 //check if the function for adding image size exists
 if ( function_exists( 'add_image_size' ) ) {
     //add theme support for custom size of images in posts/pages so you can use them in code
@@ -63,4 +65,60 @@ function custom_sizes( $sizes ) {
     ) );
 }
 
-?>
+/**
+ * function for removing wp version parameter from any enqueued scripts
+**/
+function vc_remove_wp_ver_css_js( $src ) {
+    if ( strpos( $src, 'ver=' . get_bloginfo( 'version' ) ) )
+        $src = remove_query_arg( 'ver', $src );
+    return $src;
+}
+//filter for removeing  version parameter from styles
+add_filter( 'style_loader_src', 'vc_remove_wp_ver_css_js', 9999 );
+//filter for removeing version parameter from scripts
+add_filter( 'script_loader_src', 'vc_remove_wp_ver_css_js', 9999 );
+
+/**
+ * Proper way to enqueue scripts and styles
+ */
+function enqueue_theme_styles() {
+//Definition of function in use
+//     wp_enqueue_style( string $handle, string $src = '', array $deps = array(), string|bool|null $ver = false, string $media = 'all' )
+//          $handle (exp. 'bootstrap')
+//          (string) (Required) Name of the stylesheet. Should be unique.
+
+//          $src    (exp. 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+//          (string) (Optional) Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory.
+
+//          $deps   (exp. ['example_deps_url'])
+//          (array) (Optional) An array of registered stylesheet handles this stylesheet depends on.
+//          Default value: array()
+
+//          $ver    (exp. null , this dons't add version number witch optimizes for page load
+//          (string|bool|null) (Optional) String specifying stylesheet version number, if it has one,
+//          which is added to the URL as a query string for cache busting purposes.
+//          If version is set to false, a version number is automatically added equal to current installed
+//          WordPress version. If set to null, no version is added.
+//          Default value: false
+
+//          $media  (exp. 'all')
+//          (string) (Optional) The media for which this stylesheet has been defined. Accepts media types like 'all',
+//          'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
+//          Default value: 'all'
+
+//      wp_enqueue_script( string $handle, string $src = '', array $deps = array(), string|bool|null $ver = false, bool $in_footer = false )
+//      Values as above, additionally:
+
+//          $in_footer (exp. true, best practice in most case to be 'true' so it doesn't block rendering of the page
+//          (bool) (Optional) Whether to enqueue the script before </body> instead of in the <head>. Default 'false'.
+//          Default value: false
+
+
+
+    // wp_enqueue_style( 'style-name', get_stylesheet_uri() );
+    // wp_enqueue_script( 'script-name', get_template_directory_uri() . '/js/example.js', array(), '1.0.0', true );
+    wp_enqueue_style( 'bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', false, null, 'all' );
+
+}
+//Hook for activating the function when generating the page.
+add_action( 'wp_enqueue_scripts', 'enqueue_theme_styles' );
