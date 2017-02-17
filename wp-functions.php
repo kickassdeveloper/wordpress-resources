@@ -122,3 +122,22 @@ function enqueue_theme_styles() {
 }
 //Hook for activating the function when generating the page.
 add_action( 'wp_enqueue_scripts', 'enqueue_theme_styles' );
+
+/**
+ * Custom function for getting the post featured image link
+ * @param $postID
+ * @param $size   (registered image size small,medium,large)
+ * @return string ( url of the featured image
+ * combine this function with the set_https function if makein custom themes
+ */
+function get_page_feature_image_url($postID, $size)
+{
+    //get wp object of featured image
+    $feature_image_id = get_post_thumbnail_id($postID);
+    //get array of the featured image based on size
+    $feature_image_meta = wp_get_attachment_image_src($feature_image_id, $size);
+    //the 1st argument of the array is the url of the image  2nd is the width the 3ed is the height
+    $link = $feature_image_meta[0];
+    //return the first argument
+    return $link;
+}
