@@ -166,5 +166,5 @@ if ($the_query->have_posts()) :
     // In each iteration of the loop you can use all standard values and  custom meta values
     endwhile;
 endif;
-// Reset Post Data 
+// Reset Post Data
 wp_reset_postdata();

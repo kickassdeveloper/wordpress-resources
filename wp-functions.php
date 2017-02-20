@@ -141,3 +141,15 @@ function get_page_feature_image_url($postID, $size)
     //return the first argument
     return $link;
 }
+
+/**
+ * Simple function for printing out content with character limitations
+ * @param $content
+ * @param $char_limit
+ * @param $end_string
+ * exp "You want to limit a excerpt to 220 char and hava ... at the end"
+ * call function print_char_limit(get_the_excerpt(), 220, '...');
+*/
+function print_content_char_limit($content,$char_limit , $end_string){
+    echo substr($content, 0,$char_limit).$end_string;
+}
