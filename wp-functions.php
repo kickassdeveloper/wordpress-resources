@@ -67,7 +67,9 @@ function custom_sizes( $sizes ) {
 
 /**
  * function for removing wp version parameter from any enqueued scripts
-**/
+ * @param $src
+ * @return string
+ */
 function vc_remove_wp_ver_css_js( $src ) {
     if ( strpos( $src, 'ver=' . get_bloginfo( 'version' ) ) )
         $src = remove_query_arg( 'ver', $src );
@@ -152,4 +154,31 @@ function get_page_feature_image_url($postID, $size)
 */
 function print_content_char_limit($content,$char_limit , $end_string){
     echo substr($content, 0,$char_limit).$end_string;
+}
+
+/**
+ * Generic function for getting all custom posts that are published
+ * @param $post_type
+ * @return WP_Query values are WP object
+ *
+ * This function should be used with custom post types  but can be used with core post types
+ * ( you don't have to use the  CPT plugin if you registered your own CPT)
+ * exp:
+ * $return_values = get_custom_posts('post');
+ * while( $return_values->have_posts() )$return_values->the_post();
+ * echo the_content();
+ * endwhile;
+ */
+function get_custom_posts($post_type){
+    //Get the number of all posts that are published
+    $count_posts = wp_count_posts( $post_type )->publish;
+    //Define the arguments for WP_Query
+    $args = array('post_type'=> $post_type,
+            'posts_per_page' =>$count_posts,
+            'orderby'  => 'post_id',
+            'order'    => 'asc'
+            );
+    //Construct the WP object with the past arguments
+    $custom_posts = new WP_Query($args);
+    return $custom_posts;
 }
