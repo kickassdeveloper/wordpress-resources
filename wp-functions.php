@@ -182,3 +182,20 @@ function get_custom_posts($post_type){
     $custom_posts = new WP_Query($args);
     return $custom_posts;
 }
+
+//Removes inline styles and other coding junk added by the WYSIWYG editor.
+add_filter( 'the_content', 'clean_post_content' );
+function clean_post_content($content) {
+
+    // Remove inline styling
+    $content = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $content);
+
+    // Remove font tag
+    $content = preg_replace('/<font[^>]+>/', '', $content);
+
+    // Remove empty tags
+    $post_cleaners = array('<p></p>' => '', '<p> </p>' => '', '<p>&nbsp;</p>' => '', '<span></span>' => '', '<span> </span>' => '', '<span>&nbsp;</span>' => '', '<span>' => '', '</span>' => '', '<font>' => '', '</font>' => '');
+    $content = strtr($content, $post_cleaners);
+
+    return $content;
+}
