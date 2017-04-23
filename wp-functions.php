@@ -183,7 +183,7 @@ function get_custom_posts($post_type){
     return $custom_posts;
 }
 
-//register new custom type taxonomy( category)
+//register new custom type taxonomy(category)
 function add_custom_types_to_tax( $query ) {
 if( is_category() || is_tag() && empty( $query->query_vars['suppress_filters'] ) ) {
 
