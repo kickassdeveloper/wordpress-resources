@@ -183,21 +183,7 @@ function get_custom_posts($post_type){
     return $custom_posts;
 }
 
-<<<<<<< HEAD
-//register new custom type taxonomy(category)
-function add_custom_types_to_tax( $query ) {
-if( is_category() || is_tag() && empty( $query->query_vars['suppress_filters'] ) ) {
 
-// Get all your post types
-$post_types = get_post_types();
-
-$query->set( 'post_type', $post_types );
-return $query;
-}
-}
-add_filter( 'pre_get_posts', 'add_custom_types_to_tax' );
-?>
-=======
 //Removes inline styles and other coding junk added by the WYSIWYG editor.
 add_filter( 'the_content', 'clean_post_content' );
 function clean_post_content($content) {
@@ -214,4 +200,18 @@ function clean_post_content($content) {
 
     return $content;
 }
->>>>>>> e4a4dc5d4082bc19ee6bddc3d13befe1521a44df
+
+//register new custom type taxonomy(category)
+function add_custom_types_to_tax( $query ) {
+if( is_category() || is_tag() && empty( $query->query_vars['suppress_filters'] ) ) {
+
+// Get all your post types
+$post_types = get_post_types();
+
+$query->set( 'post_type', $post_types );
+return $query;
+}
+}
+add_filter( 'pre_get_posts', 'add_custom_types_to_tax' );
+?>
+
