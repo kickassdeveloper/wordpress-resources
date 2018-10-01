@@ -11,7 +11,7 @@ function inject_js() {
 global $wp;
 $current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
 if($current_url == 'url zeljene stranice stranice'){
-	echo '<script src="'. esc_url( plugins_url( 'images/wordpress.png', __FILE__ ) ).'/imeJSfajlaGdeSeNalazi.js"></script>';
+	echo '<script src="'. esc_url( plugins_url( __FILE__ ) ).'/imeJSfajlaGdeSeNalazi.js"></script>';
  	 }
 }
 add_action( 'wp_footer', 'inject_js', 10 );
