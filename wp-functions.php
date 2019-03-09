@@ -212,4 +212,20 @@ function add_custom_types_to_tax( $query ) {
 }
 add_filter( 'pre_get_posts', 'add_custom_types_to_tax' );
 
+/**
+ *
+ * Gets last slug of the the current URL
+ * Gut to be used in the header or body class
+ * 
+*/
+function get_last_url_slug() {
+
+    $url = $_SERVER['REQUEST_URI'];
+    $parts = explode("/", $url);
+    $lastPart = $parts[count($parts)-2];
+    
+    
+    return $lastPart;
+}
+
 
